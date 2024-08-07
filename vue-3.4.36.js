@@ -11138,6 +11138,7 @@ Expected function or array of functions, received type ${typeof value}.`
         }
         const { mount } = app;
         app.mount = (containerOrSelector) => {
+            // 容器正常化 如果传#app 其实就是使用 document.querySelector() 拿到容器元素
             const container = normalizeContainer(containerOrSelector);
             if (!container) return;
             // app的组件
@@ -11215,14 +11216,18 @@ Expected function or array of functions, received type ${typeof value}.`
             });
         }
     }
+    // 例如传 #app
     function normalizeContainer(container) {
+        // 判断是字符串
         if (isString(container)) {
+            // 使用 querySelector 拿到容器元素
             const res = document.querySelector(container);
             if (!res) {
                 warn(
                     `Failed to mount app: mount target selector "${container}" returned null.`
                 );
             }
+            // 返回容器元素
             return res;
         }
         if (window.ShadowRoot && container instanceof window.ShadowRoot && container.mode === "closed") {
