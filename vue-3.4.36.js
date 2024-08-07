@@ -11130,7 +11130,7 @@ Expected function or array of functions, received type ${typeof value}.`
     };
     const createApp = (...args) => {
         // 调用任何可用的调试功能，例如设置断点
-        debugger
+        // debugger
         const app = ensureRenderer().createApp(...args);
         {
             injectNativeTagCheck(app);
@@ -11140,8 +11140,10 @@ Expected function or array of functions, received type ${typeof value}.`
         app.mount = (containerOrSelector) => {
             const container = normalizeContainer(containerOrSelector);
             if (!container) return;
+            // app的组件
             const component = app._component;
             if (!isFunction(component) && !component.render && !component.template) {
+                // 组件的template = 容器的innerHTML
                 component.template = container.innerHTML;
             }
             // 清空容器内的HTML

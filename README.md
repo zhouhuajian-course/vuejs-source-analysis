@@ -5,6 +5,29 @@
 https://vuejs.org/  
 https://github.com/vuejs/core  
 
+## 容器内容清空前，会把innerHTML设置为组件的template
+
+```javascript
+        app.mount = (containerOrSelector) => {
+            const container = normalizeContainer(containerOrSelector);
+            if (!container) return;
+            // app的组件
+            const component = app._component;
+            if (!isFunction(component) && !component.render && !component.template) {
+                // 组件的template = 容器的innerHTML
+                component.template = container.innerHTML;
+            }
+            // 清空容器内的HTML
+            container.innerHTML = "";
+            const proxy = mount(container, false, resolveRootNamespace(container));
+            if (container instanceof Element) {
+                container.removeAttribute("v-cloak");
+                container.setAttribute("data-v-app", "");
+            }
+            return proxy;
+        };
+```
+
 ## 容器的内容会先被清空
 
 ```javascript
