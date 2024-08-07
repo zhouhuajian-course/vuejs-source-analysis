@@ -11129,6 +11129,8 @@ Expected function or array of functions, received type ${typeof value}.`
         ensureHydrationRenderer().hydrate(...args);
     };
     const createApp = (...args) => {
+        // 调用任何可用的调试功能，例如设置断点
+        debugger
         const app = ensureRenderer().createApp(...args);
         {
             injectNativeTagCheck(app);
@@ -11142,6 +11144,7 @@ Expected function or array of functions, received type ${typeof value}.`
             if (!isFunction(component) && !component.render && !component.template) {
                 component.template = container.innerHTML;
             }
+            // 清空容器内的HTML
             container.innerHTML = "";
             const proxy = mount(container, false, resolveRootNamespace(container));
             if (container instanceof Element) {
